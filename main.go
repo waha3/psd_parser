@@ -21,7 +21,5 @@ func main() {
 	}
 
 	header := &psd.Header{}
-	colorModeData := &psd.ColorModeData{}
 	header.ReadHeader(file)
-	colorModeData.ReadColorModeData(file)
 }

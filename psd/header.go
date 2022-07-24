@@ -34,9 +34,9 @@ type Header struct {
 	// The color mode of the file. Supported values are: Bitmap = 0; Grayscale = 1; Indexed = 2; RGB = 3; CMYK = 4; Multichannel = 7; Duotone = 8; Lab = 9
 	ColorMode string `json:"colorMode"`
 	// The length of the following color data
-	// Only indexed color and duotone (see the mode field in the File header section) have color mode data. 
+	// Only indexed color and duotone (see the mode field in the File header section) have color mode data.
 	// For all other modes, this section is just the 4-byte length field, which is set to zero
-	colorModeData uint32 `json:"colorModeData"`
+	ColorModeData uint32 `json:"colorModeData"`
 }
 
 func (h *Header) ReadHeader(f *File) {
@@ -58,9 +58,10 @@ func (h *Header) ReadHeader(f *File) {
 	mode := f.ReadUint16()
 	colorModeData := f.ReadUnit32()
 
-	if (colorModeData != 0) {
-		log.Fatal("目前只支持")
+	if colorModeData != 0 {
+		log.Fatal("目前不支持 indexed color duotone color")
 	}
+	// @todo 解析两种模式
 
 	headerInfo := Header{
 		signature,
@@ -70,7 +71,7 @@ func (h *Header) ReadHeader(f *File) {
 		width,
 		depth,
 		colorModeMap[mode],
-		colorModeData
+		colorModeData,
 	}
 
 	data, err := json.Marshal(headerInfo)
