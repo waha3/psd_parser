@@ -21,6 +21,24 @@ func (f *File) ReadString(n int32) string {
 	return string(data)
 }
 
+func (f *File) ReadPascalString() string {
+	var strLen uint8
+	err := binary.Read(f.Buf, binary.BigEndian, &strLen)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	data := f.ReadString(int32(strLen))
+
+	// padding even
+	if (strLen+1)%2 != 0 {
+		f.ReadUint8()
+	}
+
+	return data
+}
+
 func (f *File) ReadUint8() uint8 {
 	var data uint8
 	err := binary.Read(f.Buf, binary.BigEndian, &data)

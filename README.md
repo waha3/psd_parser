@@ -1,2 +1,2 @@
 # psd parser
-[Link text Here](https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/)
+[psd format document](https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/)
