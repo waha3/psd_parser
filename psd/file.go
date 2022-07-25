@@ -68,3 +68,13 @@ func (f *File) ReadUnit32() uint32 {
 	}
 	return data
 }
+
+func (f *File) ReadUint64() uint64 {
+	var data uint64
+	err := binary.Read(f.Buf, binary.BigEndian, &data)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	return data
+}

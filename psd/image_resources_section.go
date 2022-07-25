@@ -7,7 +7,7 @@ import (
 
 type ImageResourcesSetion struct {
 	// Length of image resource section. The length may be zero
-	length uint32 `json:"length"`
+	Length uint32 `json:"length"`
 	// image resources
 	Blocks []ImageResourcesBlock `json:"blocks"`
 }
@@ -28,19 +28,21 @@ type ImageResourcesBlock struct {
 func (s *ImageResourcesSetion) ReadImageResourcesSetion(f *File) {
 	resourcesLen := f.ReadUnit32()
 
+	f.Buf.Seek(int64(resourcesLen), io.SeekCurrent)
+
 	// fmt.Println("resourcesLen", resourcesLen)
 
-	blockSize := uint32(0)
-	for {
-		blockSize += ReadImageResourcesBlock(f)
+	// blockSize := uint32(0)
+	// for {
+	// 	blockSize += ReadImageResourcesBlock(f)
 
-		fmt.Println("blocksize：resourcesLen", blockSize, resourcesLen)
+	// 	fmt.Println("blocksize：resourcesLen", blockSize, resourcesLen)
 
-		if blockSize >= resourcesLen {
-			fmt.Println("blocksize here", blockSize)
-			break
-		}
-	}
+	// 	if blockSize >= resourcesLen {
+	// 		fmt.Println("blocksize here", blockSize)
+	// 		break
+	// 	}
+	// }
 }
 
 func ReadImageResourcesBlock(f *File) uint32 {
@@ -51,14 +53,13 @@ func ReadImageResourcesBlock(f *File) uint32 {
 	size := f.ReadUnit32()
 
 	if size%2 != 0 {
-		f.ReadUnit32()
+		// f.ReadUint8()
 		size = size + 1
 	}
 
 	fmt.Println("block", signature, id, name, nameLen, size)
-	// fmt.Println(len(signature), id, len(name), size)
 
-	switch {
+	// switch {
 	// case id == 1032:
 	// 	ReadGridAndGuides(f)
 	// case 1033:
@@ -69,10 +70,11 @@ func ReadImageResourcesBlock(f *File) uint32 {
 	// 	ReadColorSampleHeader(f)
 	// case id >= 2000 && id < 2997:
 	// 	ReadPathResource(f)
-	default:
-		f.Buf.Seek(int64(size), io.SeekCurrent)
-	}
-	return 4 + 2 + uint32(nameLen)
+	// default:
+	// 	f.Buf.Seek(int64(size), io.SeekCurrent)
+	// }
+	f.Buf.Seek(int64(size), io.SeekCurrent)
+	return 10 + uint32(nameLen) + size
 }
 
 // Photoshop stores grid and guides information for an image in an image resource block.

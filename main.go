@@ -22,6 +22,7 @@ func main() {
 
 	header := &psd.Header{}
 	resources := &psd.ImageResourcesSetion{}
-	header.ReadHeader(file)
+	headerInfo :=header.ReadHeader(file)
 	resources.ReadImageResourcesSetion(file)
+	psd.ReadLayerAndMaskInfo(file, headerInfo)
 }

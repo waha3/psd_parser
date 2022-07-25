@@ -10,7 +10,7 @@ import (
 type Header struct {
 	// always equal to '8BPS
 	Signature string `json:"signature"`
-	// always equal to 1
+	// always equal to 1 or 2 (**PSB** version is 2)
 	Version uint16 `json:"version"`
 	// The number of channels in the image, including any alpha channels. Supported range is 1 to 56.
 	Channels uint16 `json:"channels"`
@@ -28,7 +28,7 @@ type Header struct {
 	ColorModeData uint32 `json:"colorModeData"`
 }
 
-func (h *Header) ReadHeader(f *File) {
+func (h *Header) ReadHeader(f *File) *Header {
 	colorModeMap := map[uint16]string{
 		0: "Bitmap",
 		1: "Grayscale",
@@ -62,7 +62,7 @@ func (h *Header) ReadHeader(f *File) {
 	}
 	// @todo 解析两种模式
 
-	headerInfo := Header{
+	headerInfo := &Header{
 		signature,
 		version,
 		channels,
@@ -80,4 +80,5 @@ func (h *Header) ReadHeader(f *File) {
 	}
 
 	fmt.Printf("headinfo:%s\n", data)
+	return headerInfo
 }
