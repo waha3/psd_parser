@@ -7,17 +7,6 @@ import (
 	"log"
 )
 
-var colorModeMap map[uint16]string = map[uint16]string{
-	0: "Bitmap",
-	1: "Grayscale",
-	2: "Indexed",
-	3: "RGB",
-	4: "CMYK",
-	7: "Multichannel",
-	8: "Duotone",
-	9: "Lab",
-}
-
 type Header struct {
 	// always equal to '8BPS
 	Signature string `json:"signature"`
@@ -40,6 +29,16 @@ type Header struct {
 }
 
 func (h *Header) ReadHeader(f *File) {
+	colorModeMap := map[uint16]string{
+		0: "Bitmap",
+		1: "Grayscale",
+		2: "Indexed",
+		3: "RGB",
+		4: "CMYK",
+		7: "Multichannel",
+		8: "Duotone",
+		9: "Lab",
+	}
 	signature := f.ReadString(4)
 
 	if signature != "8BPS" {

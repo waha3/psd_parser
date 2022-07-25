@@ -9,7 +9,7 @@ import (
 
 func main() {
 	// fileName := os.Args[1]
-	b, err := ioutil.ReadFile("./static/test.psd")
+	b, err := ioutil.ReadFile("./static/test2.psd")
 	if err != nil {
 		log.Fatal(err)
 	}
