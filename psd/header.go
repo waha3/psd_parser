@@ -46,7 +46,7 @@ func (h *Header) ReadHeader(f *File) *Header {
 	}
 
 	fmt.Println(signature)
-
+	// psd = 1, psb = 2
 	version := f.ReadUint16()
 	// Reserved: must be zero 6bytes
 	f.Buf.Seek(6, io.SeekCurrent)
